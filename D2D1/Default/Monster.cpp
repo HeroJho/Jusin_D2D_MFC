@@ -21,14 +21,19 @@ void CMonster::Initialize(void)
 void CMonster::Update(void)
 {
 	m_tInfo.vDir = m_pPlayer->Get_Info().vPos - m_tInfo.vPos;
+	float	fLengthM = sqrtf(m_tInfo.vDir.x * m_tInfo.vDir.x + m_tInfo.vDir.y * m_tInfo.vDir.y);
+	float	fLengthP = sqrtf(m_pPlayer->Get_Info().vDir.x * m_pPlayer->Get_Info().vDir.x + m_pPlayer->Get_Info().vDir.y * m_pPlayer->Get_Info().vDir.y);
+	float	fCos = (m_tInfo.vDir.x / fLengthM) * (m_pPlayer->Get_Info().vDir.x / fLengthP) + (m_tInfo.vDir.y / fLengthM) * (m_pPlayer->Get_Info().vDir.y / fLengthP);
+	float fDegree = acosf(fCos);
 
-	float	fLength = sqrtf(m_tInfo.vDir.x * m_tInfo.vDir.x + m_tInfo.vDir.y * m_tInfo.vDir.y);
+	if (m_tInfo.vPos.y < m_pPlayer->Get_Info().vPos.y)
+		fDegree *= -1;
 
-	m_tInfo.vDir.x /= fLength;
-	m_tInfo.vDir.y /= fLength;
+	m_tInfo.vPos.x += m_fSpeed * cosf(fDegree);
+	m_tInfo.vPos.y -= m_fSpeed * sinf(fDegree);
 	m_tInfo.vDir.z = 0.f;
 
-	m_tInfo.vPos += m_tInfo.vDir * m_fSpeed;
+	// m_tInfo.vPos += m_tInfo.vDir * m_fSpeed;
 }
 
 void CMonster::Render(HDC hDC)
