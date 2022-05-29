@@ -15,7 +15,7 @@ CMonster::~CMonster()
 void CMonster::Initialize(void)
 {
 	m_tInfo.vPos	= { 100.f, 100.f, 0.f };
-	m_fSpeed		= 5.f;
+	m_fSpeed		= 1.f;
 }
 
 void CMonster::Update(void)

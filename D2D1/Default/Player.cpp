@@ -22,9 +22,9 @@ void CPlayer::Initialize(void)
 void CPlayer::Update(void)
 {
 	// 연산을 진행
-	//Key_Input();
+	Key_Input();
 
-	m_tInfo.vPos += m_tInfo.vDir;
+	// m_tInfo.vPos += m_tInfo.vDir;
 
 
 }
@@ -46,15 +46,15 @@ void CPlayer::Release(void)
 void CPlayer::Key_Input(void)
 {
 	// GetKeyState
-	/*if (GetAsyncKeyState(VK_LEFT))
-		m_tInfo.fX -= m_fSpeed;
+	if (GetAsyncKeyState(VK_LEFT))
+		m_tInfo.vPos.x -= m_fSpeed;
 
 	if (GetAsyncKeyState(VK_RIGHT))
-		m_tInfo.fX += m_fSpeed;
+		m_tInfo.vPos.x += m_fSpeed;
 
 	if (GetAsyncKeyState(VK_UP))
-		m_tInfo.fY -= m_fSpeed;
+		m_tInfo.vPos.y -= m_fSpeed;
 
 	if (GetAsyncKeyState(VK_DOWN))
-		m_tInfo.fY += m_fSpeed;*/
+		m_tInfo.vPos.y += m_fSpeed;
 }
