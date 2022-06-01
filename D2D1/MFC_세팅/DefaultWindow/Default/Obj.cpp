@@ -17,7 +17,3 @@ CObj::~CObj()
 {
 }
 
-void CObj::Update_Matrix()
-{
-}
-

@@ -17,15 +17,12 @@ public:
 	virtual		void	Render(HDC hDC)		PURE;
 	virtual		void	Release(void)		PURE;
 
-private:
-	void Update_Matrix();
-
 protected:
-	list<D3DXVECTOR3>	m_lVertaxList;
-	INFO				m_tInfo;
-	RECT				m_tRect;
+	INFO		m_tInfo;
+	RECT		m_tRect;
+	float		m_fAngle = 0.f;
 
-	float				m_fSpeed;
+	float		m_fSpeed;
 
 };
 

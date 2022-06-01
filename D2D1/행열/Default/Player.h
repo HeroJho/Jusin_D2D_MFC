@@ -1,17 +1,6 @@
 #pragma once
 #include "Obj.h"
 
-typedef struct Square
-{
-
-	D3DXVECTOR3 Pos_1;
-	D3DXVECTOR3 Pos_2;
-	D3DXVECTOR3 Pos_3;
-	D3DXVECTOR3 Pos_4;
-
-}SQUARE;
-
-
 class CPlayer :
 	public CObj
 {
@@ -32,7 +21,6 @@ private:
 	void		Key_Input(void);
 
 private:
-	SQUARE m_tSquare;
 	D3DXVECTOR3 m_tPosinDir;
 	float m_fDegree;
 
