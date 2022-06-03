@@ -10,12 +10,6 @@ private:
 	CDevice();
 	~CDevice();
 
-	// 장치(렌더링 담당 객체) 초기화 과정
-	
-	// 1. 렌더링 장치를 생성하고 조사할 객체 생성
-	// 2. 장치 조사(지원 수준을 파악)
-	// 3. 렌더링 장치 제어 객체 생성
-
 public:
 	HRESULT				Initialize(void);
 	void				Release(void);
@@ -29,8 +23,8 @@ private:
 
 private:
 	LPDIRECT3D9			m_pSDK;	    // 사용하고자 하는 장치를 조사하고 해당 장치를 제어하는 객체를 생성하는 상위 객체
-	LPDIRECT3DDEVICE9	m_pDevice;	// 그래픽 장치를 통한 렌더링을 제어하는 객체
-	
-
+	// ㄴIDirect3D9의 포인터 typedef
+	PDIRECT3DDEVICE9	m_pDevice;	// 그래픽 장치를 통한 렌더링을 제어하는 객체
+	// ㄴIDirect3DDevice9의 포인터 typedef
 };
 
