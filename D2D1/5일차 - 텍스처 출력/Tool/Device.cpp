@@ -77,7 +77,6 @@ HRESULT CDevice::Initialize(void)
 		return E_FAIL;	}
 
 	// 스프라이트 객체 생성
-
 	if (FAILED(D3DXCreateSprite(m_pDevice, &m_pSprite)))
 	{
 		AfxMessageBox(L"CreateSprite Failed");
@@ -90,6 +89,8 @@ HRESULT CDevice::Initialize(void)
 
 void CDevice::Release(void)
 {
+	// Release 순서 중요! 상위 >> 하위
+
 	if (nullptr != m_pSprite)
 		m_pSprite->Release();
 
