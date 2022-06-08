@@ -6,6 +6,9 @@
 #include "Tool.h"
 
 #include "MainFrm.h"
+#include "ToolView.h"
+#include "MyForm.h"
+#include "MiniView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -31,11 +34,13 @@ static UINT indicators[] =
 	ID_INDICATOR_SCRL,
 };
 
+#include "TerrainMgr.h"
+
 // CMainFrame 생성/소멸
 
 CMainFrame::CMainFrame()
 {
-	// TODO: 여기에 멤버 초기화 코드를 추가합니다
+	
 }
 
 CMainFrame::~CMainFrame()
@@ -72,12 +77,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	if (cs.hMenu != NULL)
-	{
-		::DestroyMenu(cs.hMenu);
-		cs.hMenu = NULL;
-	}
-
 	if( !CFrameWnd::PreCreateWindow(cs) )
 		return FALSE;
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서
@@ -103,3 +102,40 @@ void CMainFrame::Dump(CDumpContext& dc) const
 
 // CMainFrame 메시지 처리기
 
+
+
+BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+#pragma region 복습
+
+	// CreateStatic : 분할 창을 만드는 멤버 함수
+	//	1. 부모 윈도우 주소
+	//	2. 행의 수
+	//	3. 열의 수
+
+	//m_MainSplitter.CreateStatic(this, 1, 2);
+
+	// CreateView : 분할 창에 표시할 VIEW 정보를 지정하는 함수
+	// CreateView(배치할 행, 배치할 열, 배치할 VIEW 객체 생성, 초기 크기, pContext);
+
+	//m_MainSplitter.CreateView(0, 0, RUNTIME_CLASS(CMyForm), CSize(300, WINCY), pContext);
+	//m_MainSplitter.CreateView(0, 1, RUNTIME_CLASS(CToolView), CSize(WINCX, WINCY), pContext);
+
+#pragma endregion 복습
+
+	m_MainSplitter.CreateStatic(this, 2, 2);
+
+	m_MainSplitter.CreateView(0, 0, RUNTIME_CLASS(CMiniView), CSize(300, 300), pContext);
+	m_MainSplitter.CreateView(0, 1, RUNTIME_CLASS(CMyForm), CSize(300, 300), pContext);
+	m_MainSplitter.CreateView(1, 0, RUNTIME_CLASS(CMyForm), CSize(300, 300), pContext);
+	m_MainSplitter.CreateView(1, 1, RUNTIME_CLASS(CToolView), CSize(WINCX, WINCY), pContext);
+
+	return TRUE; //CFrameWnd::OnCreateClient(lpcs, pContext);
+}
+
+void CMainFrame::OnDestroy()
+{
+	
+}

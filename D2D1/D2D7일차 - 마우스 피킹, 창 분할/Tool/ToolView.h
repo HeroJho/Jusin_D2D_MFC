@@ -5,9 +5,10 @@
 #pragma once
 
 #include "Device.h"
-#include "SingleTexture.h"
+#include "Terrain.h"
 
-class CToolView : public CView
+class CToolDoc;
+class CToolView : public CScrollView
 {
 protected: // serialization에서만 만들어집니다.
 	CToolView();
@@ -19,8 +20,7 @@ public:
 
 // 작업입니다.
 public:
-	bool Coll_Tile(const float& fX, const float& fY, const float& fTX, const float& fTY, const float& fTSizeX, const float& fTSizeY);
-	
+
 // 재정의입니다.
 public:
 	virtual void OnDraw(CDC* pDC);  // 이 뷰를 그리기 위해 재정의되었습니다.
@@ -40,10 +40,7 @@ public:
 
 protected:
 	CDevice*			m_pDevice;
-	int					m_iIndex;
-	vector<int>			m_vImgIndex;
-	POINT m_TempPoint;
-	//CSingleTexture*		m_pSingle;
+	// CTerrain*			m_pTerrain;
 
 // 생성된 메시지 맵 함수
 protected:
@@ -51,6 +48,8 @@ protected:
 public:
 	virtual void OnInitialUpdate();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnDestroy();
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // ToolView.cpp의 디버그 버전
