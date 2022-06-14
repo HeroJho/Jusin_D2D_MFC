@@ -25,6 +25,7 @@ protected:
 	virtual void OnInitialUpdate();     // 생성된 후 처음입니다.
 
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 };
-
 

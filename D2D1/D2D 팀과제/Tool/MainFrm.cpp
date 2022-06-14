@@ -10,7 +10,7 @@
 #include "MiniView.h"
 
 #include "MyForm.h"
-#include "SelectForm.h"
+#include "SelectView.h"
 
 #include "ViewMgr.h"
 
@@ -113,7 +113,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	m_MainSplitter.CreateStatic(this, 1, 3);
 
 	m_MainSplitter.CreateView(0, 1, RUNTIME_CLASS(CToolView), CSize(WINCX, WINCY), pContext);
-	m_MainSplitter.CreateView(0, 2, RUNTIME_CLASS(CSelectForm), CSize(300, WINCY), pContext);
+	m_MainSplitter.CreateView(0, 2, RUNTIME_CLASS(CSelectView), CSize(300, WINCY), pContext);
 
 	// 4인자 : 창에 출력되는 방식에 따른 옵션 WS_CHILD : 자식 창으로 생성하는 옵션, WS_VISIBLE : 생성 후 바로 화면에 표시하겠다는 옵션
 	// 5인자 : IdFromRowCol(행, 열) : 지정한 행과 열에 해당하는 창의 id 값을 반환
@@ -127,6 +127,25 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	// SetColumnInfo(열 번호, 열의 크기 지정, 허용 가능한 최소 크기)
 	m_MainSplitter.SetColumnInfo(0, 300, 10);
 
+
+/*
+
+	m_MainSplitter.CreateStatic(this, 1, 3);
+
+	m_MainSplitter.CreateView(0, 1, RUNTIME_CLASS(CToolView), CSize(WINCX, WINCY), pContext);
+
+	m_SecondSplitter.CreateStatic(&m_MainSplitter, 2, 1,
+		WS_CHILD | WS_VISIBLE,
+		m_MainSplitter.IdFromRowCol(0, 0));
+
+	m_SecondSplitter.CreateView(0, 0, RUNTIME_CLASS(CMiniView), CSize(300, 300), pContext);
+	m_SecondSplitter.CreateView(1, 0, RUNTIME_CLASS(CMyForm), CSize(300, 300), pContext);
+
+	m_ThirdSplitter.CreateStatic(&m_MainSplitter, 2, 1,
+		WS_CHILD | WS_VISIBLE,
+		m_MainSplitter.IdFromRowCol(0, 2));
+	m_ThirdSplitter.CreateView(0, 0, RUNTIME_CLASS(CRightView), CSize(300, 70), pContext);
+	m_ThirdSplitter.CreateView(1, 0, RUNTIME_CLASS(CSelectView), CSize(300, WINCY - 70), pContext);*/
 
 
 	return TRUE; //CFrameWnd::OnCreateClient(lpcs, pContext);

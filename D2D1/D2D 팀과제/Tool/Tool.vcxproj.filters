@@ -64,6 +64,9 @@
     <Filter Include="04. Manager\02. ViewMgr">
       <UniqueIdentifier>{6f0ba054-dac2-49cb-a203-4b1751134189}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. View\02. SelectView">
+      <UniqueIdentifier>{30b71573-72db-4ffb-9e3d-ac18285b1afb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -132,6 +135,9 @@
     <ClInclude Include="SelectForm.h">
       <Filter>01. View\00. MyForm</Filter>
     </ClInclude>
+    <ClInclude Include="SelectView.h">
+      <Filter>01. View\02. SelectView</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -190,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="SelectForm.cpp">
       <Filter>01. View\00. MyForm</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectView.cpp">
+      <Filter>01. View\02. SelectView</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

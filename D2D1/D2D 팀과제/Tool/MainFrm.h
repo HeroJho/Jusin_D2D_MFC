@@ -37,7 +37,8 @@ public:
 	// CSplitterWnd : 창분할을 위한 클래스로 Cwnd의 자식 클래스
 	CSplitterWnd		m_MainSplitter;
 	CSplitterWnd		m_SecondSplitter;
-
+	CSplitterWnd		m_ThirdSplitter;
+	
 // 생성된 메시지 맵 함수
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

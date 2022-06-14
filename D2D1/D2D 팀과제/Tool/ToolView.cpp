@@ -127,7 +127,7 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 
 	m_pDevice->Render_Begin();
 
-	m_pTerrain->Render();
+	m_pTerrain->Tool_Render();
 	
 	m_pDevice->Render_End();
 
@@ -192,8 +192,8 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	CScrollView::OnLButtonDown(nFlags, point);
 
-
-	m_pTerrain->Create_Tile(D3DXVECTOR3((float)point.x + CScrollMgr::Get_Instance()->GetScroll_X(), (float)point.y + CScrollMgr::Get_Instance()->GetScroll_Y(), 0.f), 0);
+	int iIndex = CViewMgr::Get_Instance()->Get_PickedTile();
+	m_pTerrain->Create_Tile(D3DXVECTOR3((float)point.x + CScrollMgr::Get_Instance()->GetScroll_X(), (float)point.y + CScrollMgr::Get_Instance()->GetScroll_Y(), 0.f), iIndex);
 
 
 	CViewMgr::Get_Instance()->All_Invalidate();

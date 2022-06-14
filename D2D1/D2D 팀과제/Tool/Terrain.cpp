@@ -4,6 +4,7 @@
 #include "Device.h"
 #include "ToolView.h"
 #include "ScrollMgr.h"
+#include "SelectView.h"
 
 CTerrain::CTerrain()
 {
@@ -23,31 +24,40 @@ void CTerrain::Initialize(void)
 		return;
 	}
 	
-	//for (int i = 0; i < TILEY; ++i)
-	//{
-	//	for (int j = 0; j < TILEX; ++j)
-	//	{
-	//		TILE* pTile = new TILE;
 
-	//		float		fX = (TILECX * j) + (i % 2) * (TILECX / 2.f);
-	//		float		fY = (TILECY / 2.f) * i;
+	// 선택 타일 생성
+	float fMoveSX = TILECX * 0.5f;
+	float fMoveSY = TILECY * 0.5f;
 
-	//		pTile->vPos = { fX, fY, 0.f };
-	//		pTile->vSize = { (float)TILECX, (float)TILECY, 0.f };
-	//		pTile->byDrawID = 3;
-	//		pTile->byOption = 0;
+	float fInvX = 0.f;
+	float fInvY = 0.f;
 
-	//		m_vecTile.push_back(pTile);
-	//		//m_vecTile.emplace_back()
-	//	}
-	//}
+	for (int i = 0; i < 144; ++i)
+	{
+
+		TILE* pTile = new TILE;
+
+		int		fX = i % 8;
+		int     fY = i / 8;
+
+		pTile->vPos = { float(fX * TILECX + fMoveSX), float(fY * TILECY + fMoveSY), 0.f };
+		pTile->vSize = { (float)TILECX, (float)TILECY, 0.f };
+		pTile->byDrawID = (BYTE)i;
+		pTile->byOption = 0;
+
+		m_vecListTile.push_back(pTile);
+
+		fInvX += 5.f;
+		fInvY += 2.f;
+	}
+
 }
 
 void CTerrain::Update(void)
 {
 }
 
-void CTerrain::Render(void)
+void CTerrain::Tool_Render(void)
 {
 	D3DXMATRIX		matWorld, matScale, matTrans;
 	RECT	rc{};
@@ -126,13 +136,60 @@ void CTerrain::Mini_Render(void)
 	}
 }
 
+void CTerrain::Select_Tile_Render(void)
+{
+
+	D3DXMATRIX		matWorld, matScale, matTrans;
+	RECT	rc{};
+
+	// 설정 창 크기와 현재 창 크기의 비율을 구한다.
+
+	::GetClientRect(CViewMgr::Get_Instance()->GetView_Select()->m_hWnd, &rc);
+	float	fX = WINCX / float(rc.right - rc.left);
+	float	fY = WINCY / float(rc.bottom - rc.top);
+
+	for (auto& iter : m_vecListTile)
+	{
+		D3DXMatrixIdentity(&matWorld);
+		D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
+		D3DXMatrixTranslation(&matTrans, iter->vPos.x,
+			iter->vPos.y,
+			iter->vPos.z);
+
+		matWorld = matScale *  matTrans;
+
+		// 비율 행렬 조절
+		Set_Ratio(&matWorld, fX, fY);
+
+		const TEXINFO*		pTexInfo = CTextureMgr::Get_Instance()->Get_Texture(L"Terrain", L"Tile", iter->byDrawID);
+
+		if (nullptr == pTexInfo)
+			return;
+
+		float		fX = pTexInfo->tImgInfo.Width / 2.f;
+		float		fY = pTexInfo->tImgInfo.Height / 2.f;
+
+		CDevice::Get_Instance()->Get_Sprite()->SetTransform(&matWorld);
+
+		CDevice::Get_Instance()->Get_Sprite()->Draw(pTexInfo->pTexture,
+			nullptr,
+			&D3DXVECTOR3(fX, fY, 0.f),
+			nullptr,
+			D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
+
+}
+
 void CTerrain::Release(void)
 {
 	for_each(m_vecTile.begin(), m_vecTile.end(), CDeleteObj());
 	m_vecTile.clear();
 	m_vecTile.shrink_to_fit();
-}
 
+	for_each(m_vecListTile.begin(), m_vecListTile.end(), CDeleteObj());
+	m_vecListTile.clear();
+	m_vecListTile.shrink_to_fit();
+}
 
 
 void CTerrain::Create_Tile(const D3DXVECTOR3 & vPos, const BYTE & byDrawID)
@@ -156,7 +213,7 @@ void CTerrain::Create_Tile(const D3DXVECTOR3 & vPos, const BYTE & byDrawID)
 	}
 	else
 	{ // 타일이 있으면
-		Tile_Change(vPos, 10);
+		// Tile_Change(vPos, 10);
 	}
 
 }
@@ -180,7 +237,7 @@ int CTerrain::Get_TileIndex(const D3DXVECTOR3& vPos)
 {
 	for (size_t iIndex = 0; iIndex < m_vecTile.size(); ++iIndex)
 	{
-		if (Picking_Dot(vPos, iIndex))
+		if (Picking_Dot(vPos, iIndex, m_vecTile))
 		{
 			return iIndex;
 		}
@@ -246,15 +303,14 @@ bool CTerrain::Picking(const D3DXVECTOR3 & vPos, const int & iIndex)
 
 	return bCheck[0] && bCheck[1] && bCheck[2] && bCheck[3];
 }
-
-bool CTerrain::Picking_Dot(const D3DXVECTOR3& vPos, const int& iIndex)
+bool CTerrain::Picking_Dot(const D3DXVECTOR3& vPos, const int& iIndex, const vector<TILE*>& m_vec)
 {
 	D3DXVECTOR3		vPoint[4] = {
 
-		{ m_vecTile[iIndex]->vPos.x, m_vecTile[iIndex]->vPos.y + (TILECY / 2.f), 0.f },
-		{ m_vecTile[iIndex]->vPos.x + (TILECX / 2.f), m_vecTile[iIndex]->vPos.y, 0.f },
-		{ m_vecTile[iIndex]->vPos.x, m_vecTile[iIndex]->vPos.y - (TILECY / 2.f), 0.f },
-		{ m_vecTile[iIndex]->vPos.x - (TILECX / 2.f), m_vecTile[iIndex]->vPos.y, 0.f }
+		{ m_vec[iIndex]->vPos.x, m_vec[iIndex]->vPos.y + (TILECY / 2.f), 0.f },
+		{ m_vec[iIndex]->vPos.x + (TILECX / 2.f), m_vec[iIndex]->vPos.y, 0.f },
+		{ m_vec[iIndex]->vPos.x, m_vec[iIndex]->vPos.y - (TILECY / 2.f), 0.f },
+		{ m_vec[iIndex]->vPos.x - (TILECX / 2.f), m_vec[iIndex]->vPos.y, 0.f }
 
 	};
 
@@ -295,6 +351,19 @@ bool CTerrain::Picking_Dot(const D3DXVECTOR3& vPos, const int& iIndex)
 	}
 
 	return true;
+}
+
+int CTerrain::Get_ListTileIndex(const D3DXVECTOR3 & vPos)
+{
+	for (size_t iIndex = 0; iIndex < m_vecListTile.size(); ++iIndex)
+	{
+		if (Picking_Dot(vPos, iIndex, m_vecListTile))
+		{
+			return iIndex;
+		}
+	}
+	// 피킹 실패 시 음수 반환
+	return -1;
 }
 
 void CTerrain::Set_Ratio(D3DXMATRIX* pOut, const float& _fX, const float& _fY, const float& fZ )
