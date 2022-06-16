@@ -9,6 +9,9 @@ public:
 	virtual ~CObj();
 
 public:
+
+
+public:
 	virtual HRESULT		Initialize(void)PURE;
 	virtual int			Update(void)PURE;
 	virtual void		Late_Update(void)PURE;
@@ -18,5 +21,6 @@ public:
 protected:
 	static D3DXVECTOR3			m_vScroll;
 
+	INFO m_tInfo;
 };
 

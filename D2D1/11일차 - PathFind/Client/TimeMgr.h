@@ -12,6 +12,8 @@ public:
 
 public:
 	float			Get_TimeDelta(void) { return m_fTimeDelta; }
+	float			Get_SecondTime(void) { return m_fSecondTime; }
+	void			SetZero_SecondTime(void) { m_fSecondTime = 0.f; }
 
 public:
 	HRESULT				Initialize();
@@ -24,5 +26,6 @@ private:
 	LARGE_INTEGER		m_CpuTick;
 
 	float				m_fTimeDelta;
+	float				m_fSecondTime;
 };
 

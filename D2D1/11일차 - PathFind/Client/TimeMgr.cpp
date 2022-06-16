@@ -6,7 +6,7 @@ IMPLEMENT_SINGLETON(CTimeMgr)
 
 CTimeMgr::CTimeMgr()
 	: m_fTimeDelta(0.f)
-
+	, m_fSecondTime(0.f)
 {
 	ZeroMemory(&m_CurrentTime, sizeof(LARGE_INTEGER));
 	ZeroMemory(&m_CpuTick, sizeof(LARGE_INTEGER));
@@ -43,6 +43,7 @@ void CTimeMgr::Update(void)
 	}
 	
 	m_fTimeDelta = float(m_CurrentTime.QuadPart - m_OldTime.QuadPart) / m_CpuTick.QuadPart;
+	m_fSecondTime += 1.f * m_fTimeDelta;
 
 	m_OldTime = m_CurrentTime;
 

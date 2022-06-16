@@ -4,6 +4,8 @@
 #include "MyTerrain.h"
 #include "ObjMgr.h"
 
+#include "Player.h"
+
 CStage::CStage()
 {
 }
@@ -29,13 +31,17 @@ HRESULT CStage::Ready_Scene()
 
 
 	CObj*	pObj = new CMyTerrain;
-
 	if (nullptr == pObj)
 		return E_FAIL;
-
 	pObj->Initialize();
-	
 	CObjMgr::Get_Instance()->Add_Object(CObjMgr::TERRAIN, pObj);
+
+
+	pObj = new CPlayer;
+	if (nullptr == pObj)
+		return E_FAIL;
+	pObj->Initialize();
+	CObjMgr::Get_Instance()->Add_Object(CObjMgr::PLAYER, pObj);
 	
 	return S_OK;
 }
